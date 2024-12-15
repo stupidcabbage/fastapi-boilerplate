@@ -4,6 +4,7 @@ version = "0.1.0"
 description = "Small fastapi boilerplate"
 authors = ["stupidcabbage <vanya@gutche.ru>"]
 license = "MIT License"
+packages = [{include = "src"}]
 readme = "README.md"
 
 [tool.poetry.dependencies]
@@ -15,6 +16,7 @@ uvicorn = "^0.33.0"
 asyncpg = "^0.30.0"
 greenlet = "^3.1.1"
 flake8 = "^7.1.1"
+bcrypt = "^4.2.1"
 
 
 [build-system]

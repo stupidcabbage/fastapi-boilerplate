@@ -3,6 +3,7 @@ from datetime import datetime
 from sqlalchemy import UUID, func
 from sqlalchemy.orm import Mapped, mapped_column
 
+from src.core.dto.users import Password
 from src.core.dto.users import User as UserDto
 
 from .base import Base
@@ -17,9 +18,9 @@ class User(Base):
     username: Mapped[str] = mapped_column()
     created_at: Mapped[datetime] = mapped_column(insert_default=func.now())
 
-    def to_schema(self) -> UserDto:
+    async def to_schema(self) -> UserDto:
         return UserDto(
             id=self.id,  # type: ignore
             username=self.username,
-            password=self.password
+            password=Password(self.password)
         )

@@ -1,4 +1,5 @@
 import uuid
+
 from fastapi import APIRouter
 
 from src.core.dto.users import CreateUserDto, UserWithoutPassword
@@ -14,10 +15,14 @@ router = APIRouter(
 
 
 @router.post("/", status_code=201)
-async def create_user(user: CreateUserDto, uow: UOWDep) -> UserWithoutPassword:
+async def create_user(
+            user: CreateUserDto, uow: UOWDep
+        ) -> UserWithoutPassword:
     return await UserService(uow).create(user)
 
 
 @router.get("/{id}", status_code=200)
-async def get_user(id: uuid.UUID, uow: UOWDep) -> UserWithoutPassword:
+async def get_user(
+            id: uuid.UUID, uow: UOWDep
+        ) -> UserWithoutPassword:
     return await UserService(uow).get(id=id)

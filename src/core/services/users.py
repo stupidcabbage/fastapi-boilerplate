@@ -1,9 +1,10 @@
+import uuid
 from abc import ABC
 from uuid import uuid4
-import uuid
 
 from src.adapters.repositories.users import IUserRepository
 from src.core.dto.users import CreateUserDto, User, UserWithoutPassword
+from src.core.exceptions.users import UserAlreadyExists
 from src.utils.uow import UnitOfWork
 
 
@@ -29,6 +30,8 @@ class UserService(IUserService):
             password=model.password
         )
         async with self.uow as uow:
+            if await uow.users.is_user_exists_by_username(u_model.username):
+                raise UserAlreadyExists
             await uow.users.create(u_model)
         return UserWithoutPassword(**u_model.model_dump())
 

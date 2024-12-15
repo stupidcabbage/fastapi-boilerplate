@@ -1,6 +1,7 @@
-from abc import ABC
 import uuid
-from sqlalchemy import select
+from abc import ABC
+
+from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from src.core.dto.users import User
@@ -17,6 +18,9 @@ class IUserRepository(ABC):
     async def get(self, id: uuid.UUID) -> User:
         raise NotImplementedError
 
+    async def is_user_exists_by_username(self, username: str) -> bool:
+        raise NotImplementedError
+
 
 class UserRepository(IUserRepository):
     def __init__(self, session: AsyncSession) -> None:
@@ -27,7 +31,7 @@ class UserRepository(IUserRepository):
             UserDB(
                 id=model.id,
                 username=model.username,
-                password=model.password,
+                password=model.password.hash()
             )
         )
 
@@ -37,5 +41,13 @@ class UserRepository(IUserRepository):
         )
         result = await self.session.scalar(stmt)
         if result:
-            return result.to_schema()
+            return await result.to_schema()
         return None
+
+    async def is_user_exists_by_username(self, username: str) -> bool:
+        stmt = (
+            select(func.count(UserDB.username)).
+            where(UserDB.username == username)
+        )
+        result = await self.session.scalar(stmt)
+        return bool(result)
