@@ -13,7 +13,7 @@
 ### Rest API boilerplate written on Python3.13 + FastAPI + SQLAlchemy + Alembic.
 ### Endpoints:
  - `POST:/users` - registrates new user
- - `POST:/auth` - authorizes user, generates JWT token.
+ - `POST:/auth/sign-in` - authorizes user, generates JWT token.
  - `GET:/users/:id` - get user profile by ID *(requires token in Bearer header)*
  - `GET:/api/v1/users/me` - returns current user profile *(requires token in Bearer header)*
 
