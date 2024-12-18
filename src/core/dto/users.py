@@ -10,9 +10,9 @@ class Password:
         self.password = password
 
     def hash(self) -> str:
-        bytes = str(self.password).encode("utf-8")
-        salt = bcrypt.gensalt()
-        return bcrypt.hashpw(bytes, salt).decode("utf-8")
+        return bcrypt.hashpw(
+            str(self.password).encode("utf-8"), bcrypt.gensalt()
+        ).decode("utf-8")
 
     def __len__(self) -> int:
         return len(self.password)
@@ -23,25 +23,27 @@ class Password:
     def __str__(self) -> str:
         return str(self.password)
 
-    def check_password(self, hash_passw: str) -> bool:
+    def check_password(self, pswd: str) -> bool:
         return bcrypt.checkpw(
-            str(self.password).encode("utf-8"),
-            hash_passw.encode("utf-8")
+            pswd.encode("utf-8"), str(self.password).encode("utf-8")
         )
 
     @classmethod
     def __get_pydantic_core_schema__(
         cls, source_type: type, handler: GetCoreSchemaHandler
     ) -> core_schema.CoreSchema:
-        return core_schema.no_info_plain_validator_function(
-            cls._validate
-        )
+        return core_schema.no_info_plain_validator_function(cls._validate)
 
     @classmethod
     def _validate(cls, password: str) -> "Password":
         if len(password) < 8:
-            raise ValueError("Password must be at least 8 characters long")
+            raise ValueError("Password must be at least 8 characters long.")
         return cls(password)
+
+
+class UserWithoutPassword(BaseModel):
+    id: uuid.UUID
+    username: str
 
 
 class User(BaseModel):
@@ -49,10 +51,8 @@ class User(BaseModel):
     username: str
     password: Password
 
-
-class UserWithoutPassword(BaseModel):
-    id: uuid.UUID
-    username: str
+    def to_user_without_password(self) -> UserWithoutPassword:
+        return UserWithoutPassword(id=self.id, username=self.username)
 
 
 class CreateUserDto(BaseModel):

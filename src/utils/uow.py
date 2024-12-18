@@ -28,7 +28,7 @@ class IUnitOfWork(ABC):
 
 class UnitOfWork(IUnitOfWork):
     def __init__(self) -> None:
-        ...
+        super().__init__()
 
     async def __aenter__(self) -> Self:
         self.session = session_maker()

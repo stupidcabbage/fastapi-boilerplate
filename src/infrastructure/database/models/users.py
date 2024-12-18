@@ -11,7 +11,7 @@ from .base import Base
 
 class User(Base):
     __tablename__ = "users"
-    __table_args__ = {'extend_existing': True}
+    __table_args__ = {"extend_existing": True}
 
     id: Mapped[UUID] = mapped_column(UUID(as_uuid=True), primary_key=True)
     password: Mapped[str] = mapped_column(default=None)
@@ -22,5 +22,5 @@ class User(Base):
         return UserDto(
             id=self.id,  # type: ignore
             username=self.username,
-            password=Password(self.password)
+            password=Password(self.password),
         )

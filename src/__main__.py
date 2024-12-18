@@ -4,8 +4,10 @@ from contextlib import asynccontextmanager
 import uvicorn
 from fastapi import FastAPI
 
-from src.adapters.controllers.routers import (get_exceptions_handlers,
-                                              get_routers)
+from src.adapters.controllers.routers import (
+    get_exceptions_handlers,
+    get_routers,
+)
 
 
 @asynccontextmanager
@@ -25,5 +27,11 @@ for type, exception_handler in get_exceptions_handlers():
 
 # TODO: переписать host, port в ENV.
 if __name__ == "__main__":
-    uvicorn.run("src.__main__:app", host="0.0.0.0", port=8000,
-                forwarded_allow_ips=["*", ])
+    uvicorn.run(
+        "src.__main__:app",
+        host="0.0.0.0",
+        port=8000,
+        forwarded_allow_ips=[
+            "*",
+        ],
+    )
