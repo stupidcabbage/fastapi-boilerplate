@@ -20,6 +20,11 @@ async def create_user(user: CreateUserDto, uow: UOWDep) -> UserWithoutPassword:
     return await UserService(uow).create(user)
 
 
+@router.get("/me", status_code=200)
+async def get_self_profile(user: JWTDep) -> UserWithoutPassword:
+    return user.to_user_without_password()
+
+
 @router.get("/{id}", status_code=200)
 async def get_user(
     id: uuid.UUID, user: JWTDep, uow: UOWDep
