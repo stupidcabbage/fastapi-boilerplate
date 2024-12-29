@@ -1,4 +1,6 @@
 from src.core.exceptions.error import BaseError
 
+from http import HTTPStatus
 
-NotFound = BaseError(404, "Not Found.")
+
+NotFound = BaseError(HTTPStatus.NOT_FOUND, "Not Found.")

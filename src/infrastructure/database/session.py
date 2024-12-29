@@ -11,7 +11,7 @@ from sqlalchemy.ext.asyncio import (
 
 from src.config import Config
 
-engine = create_async_engine(Config.get_db_config().DRIVER_URL)
+engine = create_async_engine(Config.get_db_config().driver_url)
 session_maker = async_sessionmaker(engine, expire_on_commit=False)
 
 

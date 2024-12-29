@@ -1,4 +1,6 @@
 from .error import BaseError
 
-UserAlreadyExists = BaseError(400, "User already exists")
-UserNotExists = BaseError(400, "User does not exists.")
+from http import HTTPStatus
+
+UserAlreadyExists = BaseError(HTTPStatus.BAD_REQUEST, "User already exists")
+UserNotExists = BaseError(HTTPStatus.BAD_REQUEST, "User does not exists.")

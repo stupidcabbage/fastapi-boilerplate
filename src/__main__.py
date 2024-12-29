@@ -8,13 +8,14 @@ from src.adapters.controllers.routers import (
     get_exceptions_handlers,
     get_routers,
 )
+from src.config import Config
 
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     logging.info("🚀 Starting application")
     for router in get_routers():
-        app.include_router(router)
+        app.include_router(router, prefix="/api/v1")
 
     yield
     logging.info("⛔ Stopping application")
@@ -25,12 +26,13 @@ app = FastAPI(lifespan=lifespan, debug=True)
 for type, exception_handler in get_exceptions_handlers():
     app.add_exception_handler(type, exception_handler)
 
-# TODO: переписать host, port в ENV.
+
 if __name__ == "__main__":
+    _init_config = Config.get_init_config()
     uvicorn.run(
         "src.__main__:app",
-        host="0.0.0.0",
-        port=8000,
+        host=_init_config.host,
+        port=_init_config.port,
         forwarded_allow_ips=[
             "*",
         ],

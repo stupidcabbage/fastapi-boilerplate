@@ -6,7 +6,7 @@ from sqlalchemy.orm import Mapped, mapped_column
 from src.core.dto.users import Password
 from src.core.dto.users import User as UserDto
 
-from .base import Base
+from src.infrastructure.database.models import Base
 
 
 class User(Base):

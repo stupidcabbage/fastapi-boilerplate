@@ -1,8 +1,15 @@
 from .error import BaseError
 
+from http import HTTPStatus
+
+
 IncorrectAuthorizationSchema = BaseError(
-    401, "Incorrect authorization schema."
+    HTTPStatus.UNAUTHORIZED, "Incorrect authorization schema."
 )
-ExpiredToken = BaseError(401, "Invalid or expired token.")
-InvalidToken = BaseError(401, "Invalid token authorization.")
-IncorrectAuthorizeData = BaseError(400, "Incorrect password or ID.")
+ExpiredToken = BaseError(HTTPStatus.UNAUTHORIZED, "Invalid or expired token.")
+InvalidToken = BaseError(
+    HTTPStatus.UNAUTHORIZED, "Invalid token authorization."
+)
+IncorrectAuthorizeData = BaseError(
+    HTTPStatus.BAD_REQUEST, "Incorrect password or ID."
+)

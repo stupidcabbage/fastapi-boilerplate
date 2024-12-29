@@ -1,6 +1,6 @@
+import bcrypt
 import uuid
 
-import bcrypt
 from pydantic import BaseModel, GetCoreSchemaHandler
 from pydantic_core import core_schema
 
@@ -14,6 +14,11 @@ class Password:
             str(self.password).encode("utf-8"), bcrypt.gensalt()
         ).decode("utf-8")
 
+    def check_password(self, pswd: str) -> bool:
+        return bcrypt.checkpw(
+            pswd.encode("utf-8"), str(self.password).encode("utf-8")
+        )
+
     def __len__(self) -> int:
         return len(self.password)
 
@@ -22,11 +27,6 @@ class Password:
 
     def __str__(self) -> str:
         return str(self.password)
-
-    def check_password(self, pswd: str) -> bool:
-        return bcrypt.checkpw(
-            pswd.encode("utf-8"), str(self.password).encode("utf-8")
-        )
 
     @classmethod
     def __get_pydantic_core_schema__(

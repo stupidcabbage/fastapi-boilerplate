@@ -13,7 +13,10 @@ def get_routers() -> list[APIRouter]:
     ]
 
 
-def get_exceptions_handlers() -> list[tuple[Type[Exception], Callable]]:
+AnyException = Type[Exception]
+
+
+def get_exceptions_handlers() -> list[tuple[AnyException, Callable]]:
     return [
         (BaseError, exceptions.base_exception_handler),
     ]

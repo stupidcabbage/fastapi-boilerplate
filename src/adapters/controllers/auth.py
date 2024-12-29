@@ -9,7 +9,7 @@ from src.core.services.auth import AuthService
 router = APIRouter(prefix="/auth", tags=["auth"])
 
 
-@router.post("/sign-in")
+@router.post("/")
 async def sign_in(
     uow: UOWDep, sign_data: Annotated[SignInDto, Body()]
 ) -> Token:

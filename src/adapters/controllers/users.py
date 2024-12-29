@@ -2,6 +2,8 @@ import uuid
 
 from fastapi import APIRouter
 
+from http import HTTPStatus
+
 from src.core.dto.users import CreateUserDto, UserWithoutPassword
 from src.core.exceptions.base import NotFound
 from src.core.services.users import UserService
@@ -15,17 +17,17 @@ router = APIRouter(
 )
 
 
-@router.post("/", status_code=201)
+@router.post("/", status_code=HTTPStatus.CREATED)
 async def create_user(user: CreateUserDto, uow: UOWDep) -> UserWithoutPassword:
     return await UserService(uow).create(user)
 
 
-@router.get("/me", status_code=200)
+@router.get("/me", status_code=HTTPStatus.OK)
 async def get_self_profile(user: JWTDep) -> UserWithoutPassword:
     return user.to_user_without_password()
 
 
-@router.get("/{id}", status_code=200)
+@router.get("/{id}", status_code=HTTPStatus.OK)
 async def get_user(
     id: uuid.UUID, user: JWTDep, uow: UOWDep
 ) -> UserWithoutPassword | None:

@@ -39,12 +39,12 @@ class AuthService(IAuthService):
             "id": str(id),
             "created_at": time.time(),
             "expires": time.time()
-            + self.jwt_settings.ACCESS_TOKEN_EXPIRES * 60,
+            + self.jwt_settings.access_token_expires * 60,
         }
         token = jwt.encode(
             payload,
-            self.jwt_settings.SECRET_KEY,
-            algorithm=self.jwt_settings.ALGORITHM,
+            self.jwt_settings.secret_key,
+            algorithm=self.jwt_settings.algorithm,
         )
         return Token(token=token)
 
@@ -52,9 +52,9 @@ class AuthService(IAuthService):
         try:
             decoded_token = jwt.decode(
                 token,
-                self.jwt_settings.SECRET_KEY,
-                algorithms=[self.jwt_settings.ALGORITHM],
+                self.jwt_settings.secret_key,
+                algorithms=[self.jwt_settings.algorithm],
             )
             return decoded_token
-        except Exception as e:
-            raise BaseError(401, "Incorrect authorization data.", e)
+        except Exception as exc:
+            raise BaseError(401, "Incorrect authorization data.", exc)

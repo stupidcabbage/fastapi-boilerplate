@@ -5,6 +5,8 @@ from typing import Literal
 from fastapi import Request
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
 
+from http import HTTPStatus
+
 from src.core.dto.users import User
 from src.core.exceptions.auth import (
     ExpiredToken,
@@ -46,8 +48,8 @@ class JWTBearer(HTTPBearer):
     ) -> Literal[False] | User:
         try:
             payload = AuthService(uow).decode_jwt(jwtoken)
-        except Exception as e:
-            raise BaseError(401, "Invalid token.", e)
+        except Exception as exc:
+            raise BaseError(HTTPStatus.UNAUTHORIZED, "Invalid token.", exc)
         if payload:
             user = await UserService(uow).get_by_id_with_password(
                 id=uuid.UUID(payload.get("id"))

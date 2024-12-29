@@ -37,14 +37,14 @@ class UserRepository(IUserRepository):
 
     async def get_by_id(self, id: uuid.UUID) -> User | None:
         stmt = select(UserDB).where(UserDB.id == id)
-        result = await self.session.scalar(stmt)
-        if result:
-            return await result.to_schema()
+        user = await self.session.scalar(stmt)
+        if user:
+            return await user.to_schema()
         return None
 
     async def is_user_exists_by_username(self, username: str) -> bool:
         stmt = select(func.count(UserDB.username)).where(
             UserDB.username == username
         )
-        result = await self.session.scalar(stmt)
-        return bool(result)
+        user = await self.session.scalar(stmt)
+        return bool(user)
