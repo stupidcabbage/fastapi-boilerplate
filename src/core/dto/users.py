@@ -1,6 +1,6 @@
-import bcrypt
 import uuid
 
+import bcrypt
 from pydantic import BaseModel, GetCoreSchemaHandler
 from pydantic_core import core_schema
 

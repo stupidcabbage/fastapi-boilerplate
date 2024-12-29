@@ -1,7 +1,6 @@
-from .error import BaseError
-
 from http import HTTPStatus
 
+from .error import BaseError
 
 IncorrectAuthorizationSchema = BaseError(
     HTTPStatus.UNAUTHORIZED, "Incorrect authorization schema."

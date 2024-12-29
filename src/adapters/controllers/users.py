@@ -1,8 +1,7 @@
 import uuid
+from http import HTTPStatus
 
 from fastapi import APIRouter
-
-from http import HTTPStatus
 
 from src.core.dto.users import CreateUserDto, UserWithoutPassword
 from src.core.exceptions.base import NotFound

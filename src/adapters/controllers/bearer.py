@@ -1,11 +1,10 @@
 import time
 import uuid
+from http import HTTPStatus
 from typing import Literal
 
 from fastapi import Request
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
-
-from http import HTTPStatus
 
 from src.core.dto.users import User
 from src.core.exceptions.auth import (

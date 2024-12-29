@@ -1,6 +1,7 @@
 import time
 import uuid
 from abc import ABC
+from http import HTTPStatus
 
 import jwt
 
@@ -50,11 +51,12 @@ class AuthService(IAuthService):
 
     def decode_jwt(self, token: str) -> dict:
         try:
-            decoded_token = jwt.decode(
+            return jwt.decode(
                 token,
                 self.jwt_settings.secret_key,
                 algorithms=[self.jwt_settings.algorithm],
             )
-            return decoded_token
         except Exception as exc:
-            raise BaseError(401, "Incorrect authorization data.", exc)
+            raise BaseError(
+                HTTPStatus.UNAUTHORIZED, "Incorrect authorization data.", exc
+            )
